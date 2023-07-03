@@ -5,6 +5,7 @@ services:
     image: nginx:1.24
     container_name: nginx
     hostname: nginx
+    privileged: true
     restart: always
     ports:
       - 80:80
@@ -25,6 +26,7 @@ services:
     image: mysql:latest
     container_name: mysql
     hostname: mysql
+    privileged: true
     restart: always
     ports:
       - 3306:3306
@@ -42,6 +44,7 @@ services:
       dockerfile: Dockerfile
     container_name: php7.4
     hostname: php7
+    privileged: true
     restart: always
     volumes:
       - /var/www:/var/www
@@ -58,6 +61,7 @@ services:
       dockerfile: Dockerfile
     container_name: php8.1
     hostname: php8
+    privileged: true
     restart: always
     volumes:
       - /var/www:/var/www
@@ -72,6 +76,7 @@ services:
     image: redis:latest
     container_name: redis
     hostname: redis
+    privileged: true
     ports:
       - 6379:6379
     volumes:
