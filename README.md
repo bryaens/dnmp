@@ -1,4 +1,3 @@
-# Dnmp
-快速搭建LNMP环境！
+# 快速搭建LNMP环境！
 ```
-git clonehttps://github.com/RyanY610/Dnmp.git /opt/dnmp
+git clone https://github.com/RyanY610/Dnmp.git /opt/dnmp
