@@ -22,7 +22,7 @@ services:
       - mysql
     networks:
       dnmp:
-        ipv4_address: 172.17.0.10
+        ipv4_address: 172.18.0.10
 
   mysql:
     image: mysql:latest
@@ -39,7 +39,7 @@ services:
       - TZ=Asia/Shanghai
     networks:
       dnmp:
-        ipv4_address: 172.17.0.20
+        ipv4_address: 172.18.0.20
 
   php7.4:
     build:
@@ -58,7 +58,7 @@ services:
       - redis
     networks:
       dnmp:
-        ipv4_address: 172.17.0.30
+        ipv4_address: 172.18.0.30
 
   php8.1:
     build:
@@ -77,7 +77,7 @@ services:
       - redis
     networks:
       dnmp:
-        ipv4_address: 172.17.0.40
+        ipv4_address: 172.18.0.40
 
   redis:
     image: redis:latest
@@ -92,10 +92,10 @@ services:
       - /data:/data
     networks:
       dnmp:
-        ipv4_address: 172.17.0.50
+        ipv4_address: 172.18.0.50
 
 networks:
   dnmp:
     ipam:
       config:
-        - subnet: 172.17.0.0/16
+        - subnet: 172.18.0.0/16
