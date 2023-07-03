@@ -16,37 +16,10 @@ services:
     depends_on:
       - php7.4
       - php8.1
-    networks:
-      dnmp:
-        ipv4_address: 172.17.0.1
-
-  php7.4:
-    image: php:7.4-fpm
-    container_name: php7.4
-    hostname: php7
-    restart: always
-    volumes:
-      - /var/www:/var/www
-    depends_on:
       - mysql
-      - redis
     networks:
       dnmp:
-        ipv4_address: 172.17.0.3
-
-  php8.1:
-    image: php:8.1-fpm
-    container_name: php8.1
-    hostname: php8
-    restart: always
-    volumes:
-      - /var/www:/var/www
-    depends_on:
-      - mysql
-      - redis
-    networks:
-      dnmp:
-        ipv4_address: 172.17.0.4
+        ipv4_address: 172.17.0.10
 
   mysql:
     image: mysql:latest
@@ -61,7 +34,39 @@ services:
       - MYSQL_ROOT_PASSWORD=lbdj147369
     networks:
       dnmp:
-        ipv4_address: 172.17.0.2
+        ipv4_address: 172.17.0.20
+
+  php7.4:
+    build:
+      context: ./php7.4
+      dockerfile: Dockerfile
+    container_name: php7.4
+    hostname: php7
+    restart: always
+    volumes:
+      - /var/www:/var/www
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      dnmp:
+        ipv4_address: 172.17.0.30
+
+  php8.1:
+    build:
+      context: ./php8.1
+      dockerfile: Dockerfile
+    container_name: php8.1
+    hostname: php8
+    restart: always
+    volumes:
+      - /var/www:/var/www
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      dnmp:
+        ipv4_address: 172.17.0.40
 
   redis:
     image: redis:latest
@@ -73,7 +78,7 @@ services:
       - /data:/data
     networks:
       dnmp:
-        ipv4_address: 172.17.0.5
+        ipv4_address: 172.17.0.50
 
 networks:
   dnmp:
