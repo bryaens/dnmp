@@ -28,8 +28,6 @@ services:
     image: mysql:latest
     container_name: mysql
     hostname: mysql
-    environment:
-      - TZ=Asia/Shanghai
     privileged: true
     restart: always
     ports:
@@ -38,6 +36,7 @@ services:
       - /var/lib/mysql:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=lbdj147369
+      - TZ=Asia/Shanghai
     networks:
       dnmp:
         ipv4_address: 172.17.0.20
