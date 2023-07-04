@@ -20,7 +20,6 @@ esac
 
 # 启动容器
 cd /var/dnmp/ && docker-compose up -d
-cd /var/dnmp/ && docker-compose restart
 
 # 安装ioncube
 wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$uname_f.tar.gz
@@ -28,6 +27,9 @@ tar xvf ioncube_loaders_lin_$uname_f.tar.gz
 docker cp ioncube/ioncube_loader_lin_8.1.so php8.1:/usr/local/lib/php/extensions/no-debug-non-zts-20210902/ioncube.so
 docker cp ioncube/ioncube_loader_lin_7.4.so php7.4:/usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube.so
 rm -rf ioncube_loaders_lin_$uname_f.tar.gz ioncube
+docker exec php7.4 docker-php-ext-enable ioncube
+docker exec php8.1 docker-php-ext-enable ioncube
+cd /var/dnmp/ && docker-compose restart
 
 # 启动phpCron
 cd /var/dnmp/ && cp php7.4_cron.service /etc/systemd/system/
