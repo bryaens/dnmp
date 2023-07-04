@@ -14,7 +14,7 @@ services:
       - 443:443
     volumes:
       - ./www:/var/www
-      - ./ssl/cert:/etc/ssl/cert
+      - ./cert:/etc/ssl/cert
       - ./nginx/conf.d:/etc/nginx/conf.d
     depends_on:
       - php7.4
