@@ -14,7 +14,7 @@ RUN apt update \
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo_mysql mysqli zip bcmath pcntl \
     && wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$uname_f.tar.gz \
-    && tar xvf ioncube_loaders_lin_x86-64.tar.gz \
+    && tar xvf ioncube_loaders_lin_$uname_f.tar.gz \
     && cp ioncube/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube.so \
     && rm -rf ioncube ioncube_loaders_lin_$uname_f.tar.gz \
     && pecl install redis && docker-php-ext-enable redis opcache ioncube \
