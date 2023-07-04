@@ -1,3 +1,3 @@
-# 快速搭建LNMP环境！
+# 一键DNMP脚本
 ```
-git clone https://github.com/RyanY610/Dnmp.git /opt/dnmp
+bash <(curl -sSL https://raw.githubusercontent.com/RyanY610/Dnmp/main/dnmp.sh)
