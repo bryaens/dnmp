@@ -1,0 +1,13 @@
+[Unit]
+Description=Php8.1_Cron Service
+After=network.target
+Wants=network.target
+
+[Service]
+User=root
+Type=simple
+Restart=always
+ExecStart=docker exec php8.1 /usr/sbin/cron -f
+
+[Install]
+WantedBy=multi-user.target
