@@ -34,4 +34,4 @@ cd /var/dnmp/ && docker-compose restart
 # 启动phpCron
 cd /var/dnmp/ && cp php7.4_cron.service /etc/systemd/system/
 cd /var/dnmp/ && cp php8.1_cron.service /etc/systemd/system/
-systemctl daemon-reload && systemctl php8.1_cron php7.4_cron
+systemctl daemon-reload && systemctl start php8.1_cron php7.4_cron
