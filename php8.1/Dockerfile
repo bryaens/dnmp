@@ -18,5 +18,7 @@ RUN apt update \
     && cp ioncube/ioncube_loader_lin_8.1.so /usr/local/lib/php/extensions/no-debug-non-zts-20210902/ioncube.so \
     && rm -rf ioncube ioncube_loaders_lin_x86-64.tar.gz \
     && pecl install redis && docker-php-ext-enable redis opcache ioncube \
+    # 删除临时文件
+    && docker-php-source delete && apt clean all \
     # 安装composer
     && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
