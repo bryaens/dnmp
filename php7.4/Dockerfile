@@ -1,7 +1,7 @@
 FROM php:7.4-fpm
 RUN apt update \
     # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev \
+    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev && rm -rf /var/lib/apt/lists/* \
     # 创建并初始化 `/usr/src/php`目录
     && docker-php-source extract \
     # 如果安装的扩展需要自定义配置时
