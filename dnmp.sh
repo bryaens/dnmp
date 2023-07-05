@@ -30,8 +30,3 @@ rm -rf ioncube_loaders_lin_$uname_f.tar.gz ioncube
 docker exec php7.4 docker-php-ext-enable ioncube
 docker exec php8.1 docker-php-ext-enable ioncube
 cd /var/dnmp/ && docker-compose restart
-
-# 启动phpCron
-cd /var/dnmp/ && cp php7.4_cron.service /etc/systemd/system/
-cd /var/dnmp/ && cp php8.1_cron.service /etc/systemd/system/
-systemctl daemon-reload && systemctl start php8.1_cron php7.4_cron
