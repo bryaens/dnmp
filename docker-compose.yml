@@ -35,7 +35,7 @@ services:
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=lbdj147369
+      - MYSQL_ROOT_PASSWORD=RyanY610Dnmp
       - TZ=Asia/Shanghai
     networks:
       dnmp:
