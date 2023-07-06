@@ -13,15 +13,13 @@ if [ -f /etc/os-release ]; then
         # Debian
         if grep -qiE "debian" /etc/os-release; then
             echo "Debian 操作系统，开始安装 Git..."
-            apt-get update
-            apt-get install -y git
+            apt install -y git
         fi
         
         # Ubuntu
         if grep -qiE "ubuntu" /etc/os-release; then
             echo "Ubuntu 操作系统，开始安装 Git..."
-            apt-get update
-            apt-get install -y git
+            apt install -y git
         fi
     fi
 else
