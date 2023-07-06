@@ -1,32 +1,27 @@
 #!/bin/bash
 
-curl -fsSL https://get.docker.com | bash -s docker # 安装docker
-curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose && docker-compose --version # 安装docker-compose
-git clone https://github.com/RyanY610/Dnmp.git /var/dnmp # 拉取项目到本地
+# 检测是否已安装 Docker
+if ! command -v docker &> /dev/null; then
+    echo "未安装 Docker，正在安装..."
 
-# 设置环境变量
-uname_m=$(uname -m)
-case $uname_m in
-    x86_64)
-        uname_f="x86-64"
-        ;;
-    aarch64)
-        uname_f="aarch64"
-        ;;
-    *)
-        uname_f="unknown"
-        ;;
-esac
+    # 执行 Docker 安装命令
+    if curl -fsSL https://get.docker.com | bash -s docker; then
+        echo "Docker 安装成功。"
+    else
+        echo "Docker 安装失败，请检查安装脚本或手动安装 Docker。"
+        exit 1
+    fi
+else
+    echo "Docker已安装，开始安装Docker-Compose..."
 
+    # 执行 Docker-Compose 安装命令
+    if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
+        echo "Docker-Compose 安装成功。"
+    else
+        echo "Docker-Compose 安装失败，请检查安装命令或手动安装 Docker-Compose。"
+        exit 1
+    fi
+fi
 # 启动容器
 cd /var/dnmp/ && docker-compose up -d
-
-# 安装ioncube
-wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$uname_f.tar.gz
-tar xvf ioncube_loaders_lin_$uname_f.tar.gz
-docker cp ioncube/ioncube_loader_lin_8.1.so php8.1:/usr/local/lib/php/extensions/no-debug-non-zts-20210902/ioncube.so
-docker cp ioncube/ioncube_loader_lin_7.4.so php7.4:/usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube.so
-rm -rf ioncube_loaders_lin_$uname_f.tar.gz ioncube
-docker exec php7.4 docker-php-ext-enable ioncube
-docker exec php8.1 docker-php-ext-enable ioncube
 cd /var/dnmp/ && docker-compose restart
