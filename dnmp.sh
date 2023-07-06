@@ -11,15 +11,14 @@ if ! command -v docker &> /dev/null; then
         echo "Docker 安装失败，请检查安装脚本或手动安装 Docker。"
         exit 1
     fi
-else
-    echo "Docker已安装，开始安装Docker-Compose..."
-    # 执行 Docker-Compose 安装命令
-    if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
-        echo "Docker-Compose 安装成功。"
+fi
+echo "Docker已安装，开始安装Docker-Compose..."
+# 执行 Docker-Compose 安装命令
+if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
+    echo "Docker-Compose 安装成功。"
     else
-        echo "Docker-Compose 安装失败，请检查安装命令或手动安装 Docker-Compose。"
-        exit 1
-    fi
+    echo "Docker-Compose 安装失败，请检查安装命令或手动安装 Docker-Compose。"
+    exit 1
 fi
 
 echo "开始从仓库拉取Dnmp..."
