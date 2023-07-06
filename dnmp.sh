@@ -47,6 +47,7 @@ if ! command -v docker &> /dev/null; then
         exit 1
     fi
 fi
+systemctl restart docker
 echo "Docker已安装，开始安装Docker-Compose..."
 # 执行 Docker-Compose 安装命令
 if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
