@@ -1,5 +1,42 @@
 #!/bin/bash
 
+# 检测操作系统类型
+if [ -f /etc/os-release ]; then
+    # CentOS
+    if grep -qiE "centos" /etc/os-release; then
+        echo "CentOS 操作系统，开始安装 Git..."
+        yum install -y git
+    fi
+    
+    # Debian 或 Ubuntu
+    if grep -qiE "debian" /etc/os-release; then
+        # Debian
+        if grep -qiE "debian" /etc/os-release; then
+            echo "Debian 操作系统，开始安装 Git..."
+            apt-get update
+            apt-get install -y git
+        fi
+        
+        # Ubuntu
+        if grep -qiE "ubuntu" /etc/os-release; then
+            echo "Ubuntu 操作系统，开始安装 Git..."
+            apt-get update
+            apt-get install -y git
+        fi
+    fi
+else
+    echo "无法确定操作系统类型，无法自动安装 Git。"
+    exit 1
+fi
+
+# 检查是否安装成功
+if command -v git &> /dev/null; then
+    echo "Git 安装成功。"
+else
+    echo "Git 安装失败，请检查安装命令或尝试手动安装 Git。"
+    exit 1
+fi
+
 # 检测是否已安装 Docker
 if ! command -v docker &> /dev/null; then
     echo "未安装 Docker，正在安装..."
