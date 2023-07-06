@@ -27,7 +27,7 @@ echo "开始从仓库拉取Dnmp..."
 if git clone https://github.com/RyanY610/Dnmp.git /var/dnmp; then
     echo "Dnmp 仓库拉取成功。"
 else
-    echo "Dnmp 仓库拉取失败，请检查网络连接或手动克隆仓库。"
+    echo "Dnmp 仓库拉取失败，请检查/var下是否存在dnmp目录。"
     exit 1
 fi
 
