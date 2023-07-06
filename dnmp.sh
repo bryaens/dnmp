@@ -22,6 +22,13 @@ else
         exit 1
     fi
 fi
+
+echo "开始从仓库拉取Dnmp..."
+if git clone https://github.com/RyanY610/Dnmp.git /var/dnmp; then
+    echo "Dnmp 仓库拉取成功。"
+else
+    echo "Dnmp 仓库拉取失败，请检查网络连接或手动克隆仓库。"
+    exit 1
+fi
 # 启动容器
 cd /var/dnmp/ && docker-compose up -d
-cd /var/dnmp/ && docker-compose restart
