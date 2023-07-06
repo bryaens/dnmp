@@ -30,5 +30,13 @@ else
     echo "Dnmp 仓库拉取失败，请检查网络连接或手动克隆仓库。"
     exit 1
 fi
+
 # 启动容器
 cd /var/dnmp/ && docker-compose up -d
+
+# 检查容器是否启动成功
+if docker-compose ps | grep "Up" &> /dev/null; then
+    echo "Dnmp 启动成功。"
+else
+    echo "Dnmp 启动失败，请检查是否存在相同的容器和网络。"
+fi
