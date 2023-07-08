@@ -30,6 +30,8 @@ services:
     hostname: mysql
     privileged: true
     restart: always
+    ports:
+      - 3306:3306
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
@@ -85,6 +87,8 @@ services:
       - TZ=Asia/Shanghai
     privileged: true
     restart: always
+    ports:
+      - 6379:6379
     volumes:
       - ./redis:/data
     networks:
