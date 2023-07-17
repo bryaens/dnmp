@@ -25,7 +25,7 @@ services:
       context: ./php7.4
       dockerfile: Dockerfile
     container_name: php7.4
-    hostname: php7
+    hostname: php74
     environment:
       - TZ=${TZ}
     privileged: true
@@ -41,7 +41,7 @@ services:
       context: ./php8.1
       dockerfile: Dockerfile
     container_name: php8.1
-    hostname: php8
+    hostname: php81
     environment:
       - TZ=${TZ}
     privileged: true
@@ -51,6 +51,22 @@ services:
     networks:
       dnmp:
         ipv4_address: 172.18.0.30
+
+  php8.2:
+    build:
+      context: ./php8.2
+      dockerfile: Dockerfile
+    container_name: php8.2
+    hostname: php82
+    environment:
+      - TZ=${TZ}
+    privileged: true
+    restart: always
+    volumes:
+      - ${PATH_SITE}:/var/www
+    networks:
+      dnmp:
+        ipv4_address: 172.18.0.40
 
   redis:
     image: redis:latest
@@ -64,7 +80,7 @@ services:
       - ${PATH_REDIS}:/data
     networks:
       dnmp:
-        ipv4_address: 172.18.0.40
+        ipv4_address: 172.18.0.50
 
   mysql:
     image: mysql:latest
@@ -79,7 +95,7 @@ services:
       - TZ=${TZ}
     networks:
       dnmp:
-        ipv4_address: 172.18.0.50
+        ipv4_address: 172.18.0.60
 
   mariadb:
     image: mariadb:latest
@@ -94,7 +110,7 @@ services:
       - TZ=${TZ}
     networks:
       dnmp:
-        ipv4_address: 172.18.0.60
+        ipv4_address: 172.18.0.70
 
 networks:
   dnmp:
