@@ -20,21 +20,6 @@ services:
       dnmp:
         ipv4_address: 172.18.0.10
 
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    hostname: mysql
-    privileged: true
-    restart: always
-    volumes:
-      - ${PATH_MYSQL}:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-      - TZ=${TZ}
-    networks:
-      dnmp:
-        ipv4_address: 172.18.0.20
-
   php7.4:
     build:
       context: ./php7.4
@@ -49,7 +34,7 @@ services:
       - ${PATH_SITE}:/var/www
     networks:
       dnmp:
-        ipv4_address: 172.18.0.30
+        ipv4_address: 172.18.0.20
 
   php8.1:
     build:
@@ -65,7 +50,7 @@ services:
       - ${PATH_SITE}:/var/www
     networks:
       dnmp:
-        ipv4_address: 172.18.0.40
+        ipv4_address: 172.18.0.30
 
   redis:
     image: redis:latest
@@ -79,7 +64,37 @@ services:
       - ${PATH_REDIS}:/data
     networks:
       dnmp:
+        ipv4_address: 172.18.0.40
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    hostname: mysql
+    privileged: true
+    restart: always
+    volumes:
+      - ${PATH_MYSQL}:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ}
+    networks:
+      dnmp:
         ipv4_address: 172.18.0.50
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    hostname: mariadb
+    privileged: true
+    restart: always
+    volumes:
+      - ${PATH_MARIADB}:/var/lib/mysql
+    environment:
+      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+      - TZ=${TZ}
+    networks:
+      dnmp:
+        ipv4_address: 172.18.0.60
 
 networks:
   dnmp:
