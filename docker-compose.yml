@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   nginx:
-    image: nginx:1.24
+    image: nginx:${NGINX_V}
     container_name: nginx
     hostname: nginx
     environment:
@@ -93,7 +93,7 @@ services:
     volumes:
       - ${PATH_MYSQL}:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
       - TZ=${TZ}
     networks:
       dnmp:
@@ -108,7 +108,7 @@ services:
     volumes:
       - ${PATH_MARIADB}:/var/lib/mysql
     environment:
-      - MARIADB_ROOT_PASSWORD=${DB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_PASSWORD}
       - TZ=${TZ}
     networks:
       dnmp:
