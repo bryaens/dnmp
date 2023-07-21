@@ -24,7 +24,7 @@ services:
     build:
       context: ./php7.4
       dockerfile: Dockerfile
-    image: php:fpm-7.4
+    image: php:7.4-fpm
     container_name: php7.4
     hostname: php74
     environment:
@@ -41,7 +41,7 @@ services:
     build:
       context: ./php8.1
       dockerfile: Dockerfile
-    image: php:fpm-8.1
+    image: php:8.1-fpm
     container_name: php8.1
     hostname: php81
     environment:
@@ -58,7 +58,7 @@ services:
     build:
       context: ./php8.2
       dockerfile: Dockerfile
-    image: php:fpm-8.2
+    image: php:8.2-fpm
     container_name: php8.2
     hostname: php82
     environment:
