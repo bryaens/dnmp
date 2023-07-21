@@ -268,57 +268,62 @@ uninstall_dnmp() {
 
 run_dnmp() {
 	clear
-	echo " 请选择你要启动的服务"
+	echo "请选择你要启动的服务"
 	echo ""
-	echo -e " ${GREEN}1.${NC} 启动${GREEN}nginx${NC}"
-	echo -e " ${GREEN}2.${NC} 启动${GREEN}php7.4${NC}"
-	echo -e " ${GREEN}3.${NC} 启动${GREEN}php8.1${NC}"
-	echo -e " ${GREEN}4.${NC} 启动${GREEN}php8.2${NC}"
-	echo -e " ${GREEN}5.${NC} 启动${GREEN}mysql${NC}"
-	echo -e " ${GREEN}6.${NC} 启动${GREEN}mariadb${NC}"
-	echo -e " ${GREEN}7.${NC} 启动${GREEN}redis${NC}"
-	echo " 0. 返回主菜单"
+	echo -e "${GREEN}1.${NC} 启动${GREEN}nginx${NC}"
+	echo -e "${GREEN}2.${NC} 启动${GREEN}php7.4${NC}"
+	echo -e "${GREEN}3.${NC} 启动${GREEN}php8.1${NC}"
+	echo -e "${GREEN}4.${NC} 启动${GREEN}php8.2${NC}"
+	echo -e "${GREEN}5.${NC} 启动${GREEN}mysql${NC}"
+	echo -e "${GREEN}6.${NC} 启动${GREEN}mariadb${NC}"
+	echo -e "${GREEN}7.${NC} 启动${GREEN}redis${NC}"
+	echo "0. 返回主菜单"
 	echo ""
-	read -rp "请输入选项 [0-7 默认启动1，3，5，7]: " service
-	case $service in
-		1) cd /var/dnmp && docker-compose up -d nginx ;;
-		2) cd /var/dnmp && docker-compose up -d php7.4 ;;
-		3) cd /var/dnmp && docker-compose up -d php8.1 ;;
-		4) cd /var/dnmp && docker-compose up -d php8.2 ;;
-		5) cd /var/dnmp && docker-compose up -d mysql ;;
-		6) cd /var/dnmp && docker-compose up -d mariadb ;;
-		7) cd /var/dnmp && docker-compose up -d redis ;;
-		0) menu ;;
-		*) cd /var/dnmp && docker-compose up -d nginx php8.1 mysql redis ;;
-	esac
+	read -rp "请输入选项 [0-7 用空格分开]: " services
+	services_array=($services)
+
+	for service in "${services_array[@]}"; do
+		case $service in
+			1) cd /var/dnmp && docker-compose up -d nginx ;;
+			2) cd /var/dnmp && docker-compose build php7.4 && docker-compose up -d php7.4 ;;
+			3) cd /var/dnmp && docker-compose build php8.1 && docker-compose up -d php8.1 ;;
+			4) cd /var/dnmp && docker-compose build php8.2 && docker-compose up -d php8.2 ;;
+			5) cd /var/dnmp && docker-compose up -d mysql ;;
+			6) cd /var/dnmp && docker-compose up -d mariadb ;;
+			7) cd /var/dnmp && docker-compose up -d redis ;;
+			*) menu ;;
+		esac
+	done
 	runmenu
 }
 
 stop_dnmp() {
 	clear
-	echo " 请选择你要停止的服务"
-	echo -e " ${YELLOW}注意！！！停止mysql、mariadb和redis会清空这3个服务的数据${NC}"
+	echo "请选择您想要停止的服务"
+	echo -e "${YELLOW}注意！！！停止mysql、mariadb和redis将清除这3个服务的数据${NC}"
 	echo ""
-	echo -e " ${GREEN}1.${NC} ${RED}停止nginx${NC}"
-	echo -e " ${GREEN}2.${NC} ${RED}停止php7.4${NC}"
-	echo -e " ${GREEN}3.${NC} ${RED}停止php8.1${NC}"
-	echo -e " ${GREEN}4.${NC} ${RED}停止php8.2${NC}"
-	echo -e " ${GREEN}5.${NC} ${RED}停止mysql${NC}"
-	echo -e " ${GREEN}6.${NC} ${RED}停止mariadb${NC}"
-	echo -e " ${GREEN}7.${NC} ${RED}停止redis${NC}"
-	echo " 0. 返回主菜单"
+	echo -e "${GREEN}1.${NC} ${RED}停止nginx${NC}"
+	echo -e "${GREEN}2.${NC} ${RED}停止php7.4${NC}"
+	echo -e "${GREEN}3.${NC} ${RED}停止php8.1${NC}"
+	echo -e "${GREEN}4.${NC} ${RED}停止php8.2${NC}"
+	echo -e "${GREEN}5.${NC} ${RED}停止mysql${NC}"
+	echo -e "${GREEN}6.${NC} ${RED}停止mariadb${NC}"
+	echo -e "${GREEN}7.${NC} ${RED}停止redis${NC}"
+	echo "0. 返回主菜单"
 	echo ""
-	read -rp "请输入选项 [0-7 默认0]: " service
-	case $service in
-		1) docker stop nginx && docker rm nginx ;;
-		2) docker stop php7.4 && docker rm php7.4 ;;
-		3) docker stop php8.1 && docker rm php8.1 ;;
-		4) docker stop php8.2 && docker rm php8.2 ;;
-		5) docker stop mysql && docker rm mysql && rm -rf /var/dnmp/mysql ;;
-		6) docker stop mariadb && docker rm mariadb && rm -rf /var/dnmp/mariadb ;;
-		7) docker stop redis && docker rm redis && rm -rf /var/dnmp/redis ;;
-		*) menu ;;
-	esac
+	read -rp "请输入选项[0-7 用空格分开]: " services
+	for service in $services; do
+		case $service in
+			1) docker stop nginx && docker rm nginx ;;
+			2) docker stop php7.4 && docker rm php7.4 ;;
+			3) docker stop php8.1 && docker rm php8.1 ;;
+			4) docker stop php8.2 && docker rm php8.2 ;;
+			5) docker stop mysql && docker rm mysql && rm -rf /var/dnmp/mysql ;;
+			6) docker stop mariadb && docker rm mariadb && rm -rf /var/dnmp/mariadb ;;
+			7) docker stop redis && docker rm redis && rm -rf /var/dnmp/redis ;;
+			*) menu ;;
+		esac
+	done
 	stopmenu
 }
 
