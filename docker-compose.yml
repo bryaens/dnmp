@@ -90,6 +90,8 @@ services:
     hostname: mysql
     privileged: true
     restart: always
+    ports:
+      - 3305:3306
     volumes:
       - ${PATH_MYSQL}:/var/lib/mysql
     environment:
@@ -105,6 +107,8 @@ services:
     hostname: mariadb
     privileged: true
     restart: always
+    ports:
+      - 3307:3306
     volumes:
       - ${PATH_MARIADB}:/var/lib/mysql
     environment:
