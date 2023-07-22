@@ -633,9 +633,9 @@ run_dnmp() {
 		for service in "${services_array[@]}"; do
 			case $service in
 				1) cd /var/dnmp && docker-compose up -d nginx ;;
-	2) cd /var/dnmp && docker-compose build php7.4 && docker-compose up -d php7.4 ;;
-	3) cd /var/dnmp && docker-compose build php8.1 && docker-compose up -d php8.1 ;;
-	4) cd /var/dnmp && docker-compose build php8.2 && docker-compose up -d php8.2 ;;
+	2) cd /var/dnmp && docker-compose up -d php7.4 ;;
+	3) cd /var/dnmp && docker-compose up -d php8.1 ;;
+	4) cd /var/dnmp && docker-compose up -d php8.2 ;;
 	5) cd /var/dnmp && docker-compose up -d mysql ;;
 	6) cd /var/dnmp && docker-compose up -d mariadb ;;
 	7) cd /var/dnmp && docker-compose up -d redis ;;
