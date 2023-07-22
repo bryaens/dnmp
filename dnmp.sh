@@ -718,7 +718,7 @@ acmessl() {
 		echo " -------------"
 		echo -e " ${GREEN}0.${NC} 返回主菜单"
 		echo ""
-		read -rp "请输入选项 [0-9]: " acmessl
+		read -rp "请输入选项 [0-7]: " acmessl
 	case "$acmessl" in
 		1) install_acme ;;
 		2) uninstall_acme ;;
