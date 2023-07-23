@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 RUN apt update \
     # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev && rm -rf /var/lib/apt/lists/* \
+    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev \
     # 设置环境变量
     && uname -m > /tmp/arch.txt \
     && if [ "$(cat /tmp/arch.txt)" = "x86_64" ] ; then \
@@ -23,7 +23,7 @@ RUN apt update \
     && docker-php-ext-install pdo_mysql mysqli zip bcmath pcntl \
     && pecl install redis && docker-php-ext-enable redis opcache \
     # 删除临时文件
-    && docker-php-source delete && apt clean all \
+    && docker-php-source delete && apt clean all && rm -rf /var/lib/apt/lists/* \
     # 安装composer
     && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
