@@ -6,7 +6,7 @@ YELLOW="\033[33m"
 NC="\033[0m"
 
 REGEX=("debian" "ubuntu" "centos|red hat|kernel|oracle linux|alma|rocky" "'amazon linux'" "fedora")
-RELEASE=("Debian" "Ubuntu" "CentOS" "CentOS" "Fedora")
+RELEASE=("Debian" "Ubuntu" "CentOS" "Fedora")
 PACKAGE_UPDATE=("apt-get update" "apt-get update" "yum -y update" "yum -y update" "yum -y update")
 PACKAGE_INSTALL=("apt -y install" "apt -y install" "yum -y install" "yum -y install" "yum -y install")
 PACKAGE_REMOVE=("apt -y remove" "apt -y remove" "yum -y remove" "yum -y remove" "yum -y remove")
