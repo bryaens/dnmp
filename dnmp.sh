@@ -88,94 +88,78 @@ providermenu() {
 }
 
 install_base() {
-    # 检测是否已安装 Docker
-    if ! command -v docker &>/dev/null; then
-        echo -e "${GREEN}未安装 Docker，正在安装...${NC}"
-
-        # 执行 Docker 安装命令
-        if curl -fsSL https://get.docker.com | bash -s docker; then
-            systemctl restart docker
-            echo -e "${GREEN}Docker 安装成功。${NC}"
-        else
-            echo -e "${RED}Docker 安装失败，请检查安装脚本或手动安装 Docker。${NC}"
-            mainmenu
-        fi
-    fi
-    echo -e "${GREEN}Docker已安装，开始安装Docker-Compose...${NC}"
-    # 执行 Docker-Compose 安装命令
-    if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
-        echo -e "${GREEN}Docker-Compose 安装成功。${NC}"
-    else
-        echo -e "${RED}Docker-Compose 安装失败，请检查安装命令或手动安装 Docker-Compose。${NC}"
-        mainmenu
-    fi
-
     # 检测操作系统类型
-    if [ -f /etc/os-release ]; then
-        # CentOS
-        if grep -qiE "centos" /etc/os-release; then
-            echo -e "${GREEN}CentOS 操作系统，开始安装依赖...${NC}"
+    OS=$(cat /etc/os-release | grep -o -E "Debian|Ubuntu|CentOS" | head -n 1)
+    if [[ "$OS" != "Debian" && "$OS" != "Ubuntu" && "$OS" != "CentOS" ]]; then
+        echo -e "${RED}很抱歉，你的系统不受支持！"
+        exit 1
+    fi
+    echo -e "${GREEN}开始安装依赖...${NC}"
+    if [[ "$OS" == "CentOS" ]]; then
+        if ! command -v crond &>/dev/null; then
+            yum install -y cronie
+            systemctl enable crond
+            systemctl restart crond
+        fi
+        if ! command -v socat &>/dev/null; then
+            yum install -y socat
+        fi
+        if ! command -v git &>/dev/null; then
             yum install -y git
         fi
-
-        # Debian
-        if grep -qiE "debian" /etc/os-release; then
-            # Debian
-            if grep -qiE "debian" /etc/os-release; then
-                echo -e "${GREEN}Debian 操作系统，开始安装依赖...${NC}"
-                apt install -y git
-            fi
-
-            # Ubuntu
-            if grep -qiE "ubuntu" /etc/os-release; then
-                echo -e "${GREEN}Ubuntu 操作系统，开始安装依赖...${NC}"
-                apt install -y git
-            fi
+        if ! command -v docker &>/dev/null; then
+            yum install -y docker
+            systemctl enable docker
+            systemctl restart docker
         fi
     else
-        echo -e "${RED}无法确定操作系统类型，无法自动安装依赖。${NC}"
-        mainmenu
+        if ! command -v cron &>/dev/null; then
+            apt install -y cron
+            systemctl enable cron
+            systemctl restart cron
+        fi
+        if ! command -v socat &>/dev/null; then
+            apt install -y socat
+        fi
+        if ! command -v git &>/dev/null; then
+            apt install -y git
+        fi
+        if ! command -v docker &>/dev/null; then
+            apt install -y docker.io
+            systemctl enable docker
+            systemctl restart docker
+        fi
     fi
 
-    # 检查依赖是否安装成功
-    if command -v git &>/dev/null; then
-        echo -e "${GREEN}依赖安装成功。${NC}"
-    else
-        echo -e "${RED}依赖安装失败，请检查安装命令或尝试手动安装依赖。${NC}"
-        mainmenu
-    fi
-}
-
-install1_base() {
-    if [[ ! $SYSTEM == "CentOS" ]]; then
-        ${PACKAGE_UPDATE[int]}
-    fi
-    ${PACKAGE_INSTALL[int]} wget socat openssl
-    if [[ $SYSTEM == "CentOS" ]]; then
-        ${PACKAGE_INSTALL[int]} cronie
-        systemctl restart crond
-        systemctl enable crond
-    else
-        ${PACKAGE_INSTALL[int]} cron
-        systemctl restart cron
-        systemctl enable cron
+    if ! command -v docker-compose &>/dev/null; then
+        # 执行 Docker-Compose 安装命令
+         if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
+            echo -e "${GREEN}Docker-Compose 安装成功。${NC}"
+        else
+            echo -e "${RED}Docker-Compose 安装失败，请检查安装命令或手动安装 Docker-Compose。${NC}"
+            mainmenu
+        fi
     fi
 }
 
 install_dnmp() {
     install_base
     echo -e "${GREEN}开始安装 Dnmp...${NC}"
-    if git clone https://github.com/RyanY610/Dnmp.git /var/dnmp; then
-        echo -e "${GREEN}Dnmp 安装成功。${NC}"
+    
+    if [ -d "/var/dnmp" ]; then
+        echo -e "${GREEN}Dnmp 已安装。${NC}"
     else
-        echo -e "${RED}Dnmp 安装失败，请检查/var下是否存在dnmp目录。${NC}"
-        mainmenu
+        if git clone https://github.com/RyanY610/Dnmp.git /var/dnmp; then
+            echo -e "${GREEN}Dnmp 安装成功。${NC}"
+        else
+            echo -e "${RED}Dnmp 安装失败，请检查是否能连通github。${NC}"
+            mainmenu
+        fi
     fi
     mainmenu
 }
 
 install_acme() {
-    install1_base
     read -rp "请输入注册邮箱 (例: admin@gmail.com, 或留空自动生成一个gmail邮箱): " acmeEmail
     if [[ -z $acmeEmail ]]; then
         autoEmail=$(date +%s%N | md5sum | cut -c 1-16)
