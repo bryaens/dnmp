@@ -26,5 +26,3 @@ RUN apt update \
     && docker-php-source delete && apt clean all && rm -rf /var/lib/apt/lists/* \
     # 安装composer
     && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
-
-ENV uname_f=${uname_f}
