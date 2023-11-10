@@ -21,7 +21,7 @@ RUN apt update \
     # 安装扩展
     && docker-php-ext-install -j$(nproc) gd \
     && docker-php-ext-install pdo_mysql mysqli zip bcmath pcntl \
-    && pecl install redis && docker-php-ext-enable redis opcache \
+    && pecl install redis yaml && docker-php-ext-enable redis yaml opcache \
     # 删除临时文件
     && docker-php-source delete && apt clean all && rm -rf /var/lib/apt/lists/* \
     # 安装composer
