@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 RUN apt update \
     # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev \
+    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev libyaml-dev \
     # 设置环境变量
     && uname -m > /tmp/arch.txt \
     && if [ "$(cat /tmp/arch.txt)" = "x86_64" ] ; then \
