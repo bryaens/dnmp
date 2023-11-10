@@ -2,7 +2,7 @@ FROM php:8.2-fpm
 
 RUN apt update \
     # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev libyaml-dev \
+    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev libbz2-dev libyaml-dev \
     # 设置环境变量
     && uname -m > /tmp/arch.txt \
     && if [ "$(cat /tmp/arch.txt)" = "x86_64" ] ; then \
@@ -20,7 +20,7 @@ RUN apt update \
      --with-webp \
     # 安装扩展
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql mysqli zip bcmath pcntl \
+    && docker-php-ext-install pdo_mysql mysqli zip bz2 bcmath pcntl \
     && pecl install redis yaml && docker-php-ext-enable redis yaml opcache \
     # 删除临时文件
     && docker-php-source delete && apt clean all && rm -rf /var/lib/apt/lists/* \
