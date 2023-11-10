@@ -2,7 +2,7 @@ FROM php:7.4-fpm
 
 RUN apt update \
     # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev \
+    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev libbz2-dev libyaml-dev \
     # 设置环境变量
     && uname -m > /tmp/arch.txt \
     && if [ "$(cat /tmp/arch.txt)" = "x86_64" ] ; then \
@@ -20,11 +20,11 @@ RUN apt update \
      --with-webp \
     # 安装扩展
     && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql mysqli zip bcmath pcntl \
+    && docker-php-ext-install pdo_mysql mysqli zip bz2 bcmath pcntl \
     && wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$uname_f.tar.gz \
     && tar xvf ioncube_loaders_lin_$uname_f.tar.gz \
     && cp ioncube/ioncube_loader_lin_7.4.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/ioncube.so \
-    && pecl install redis && docker-php-ext-enable redis opcache ioncube \
+    && pecl install redis yaml && docker-php-ext-enable redis yaml opcache ioncube \
     # 删除临时文件
     && docker-php-source delete && apt clean all && rm -rf ioncube ioncube_loaders_lin_$uname_f.tar.gz /var/lib/apt/lists/* \
     # 安装composer
