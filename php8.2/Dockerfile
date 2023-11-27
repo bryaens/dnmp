@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:12
 
 RUN apt update -y \
     && apt install -y init locales git wget curl vim cron sudo gnupg2 tzdata php-fpm php-bcmath php-curl php-gd php-mbstring php-redis php-sqlite3 php-xml php-zip php-yaml php-mysql \
