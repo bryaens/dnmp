@@ -1,28 +1,16 @@
-FROM php:8.2-fpm
+FROM debian:latest
 
-RUN apt update \
-    # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev libbz2-dev libyaml-dev \
-    # 设置环境变量
-    && uname -m > /tmp/arch.txt \
-    && if [ "$(cat /tmp/arch.txt)" = "x86_64" ] ; then \
-        uname_f="x86-64" ; \
-       elif [ "$(cat /tmp/arch.txt)" = "aarch64" ] ; then \
-        uname_f="aarch64" ; \
-       fi \
-    # 创建并初始化 /usr/src/php目录
-    && docker-php-source extract \
-    # 如果安装的扩展需要自定义配置时
-    && docker-php-ext-configure gd \
-     --enable-gd \
-     --with-freetype \
-     --with-jpeg \
-     --with-webp \
-    # 安装扩展
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql mysqli zip bz2 bcmath pcntl \
-    && pecl install redis yaml && docker-php-ext-enable redis yaml opcache \
-    # 删除临时文件
-    && docker-php-source delete && apt clean all && rm -rf /var/lib/apt/lists/* \
-    # 安装composer
-    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+RUN apt update -y \
+    && apt install -y init locales git wget curl vim cron sudo gnupg2 tzdata php-fpm php-bcmath php-curl php-gd php-mbstring php-redis php-sqlite3 php-xml php-zip php-yaml php-mysql \
+    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer \
+    && sed -i "s/^#\?listen =.*/listen = 0.0.0.0:9000/g" /etc/php/8.2/fpm/pool.d/www.conf \
+    && sed -i "s/^#\?upload_max_filesize =.*/upload_max_filesize = 1024M/g" /etc/php/8.2/cli/php.ini \
+    && sed -i "s/^#\?post_max_size =.*/post_max_size = 1024M/g" /etc/php/8.2/cli/php.ini \
+    && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
+    && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && apt clean all && rm -rf /var/lib/apt/lists/*
+
+ENV LANG zh_CN.UTF-8
+
+CMD ["/sbin/init"]
