@@ -1,31 +1,20 @@
-FROM php:8.1-fpm
+FROM debian:11
 
-RUN apt update \
-    # 相关依赖必须手动安装
-    && apt install -y wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev zlib1g-dev libzip-dev libbz2-dev libyaml-dev \
-    # 设置环境变量
-    && uname -m > /tmp/arch.txt \
-    && if [ "$(cat /tmp/arch.txt)" = "x86_64" ] ; then \
-        uname_f="x86-64" ; \
-       elif [ "$(cat /tmp/arch.txt)" = "aarch64" ] ; then \
-        uname_f="aarch64" ; \
-       fi \
-    # 创建并初始化 /usr/src/php目录
-    && docker-php-source extract \
-    # 如果安装的扩展需要自定义配置时
-    && docker-php-ext-configure gd \
-     --enable-gd \
-     --with-freetype \
-     --with-jpeg \
-     --with-webp \
-    # 安装扩展
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install pdo_mysql mysqli zip bz2 bcmath pcntl \
-    && wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_$uname_f.tar.gz \
-    && tar xvf ioncube_loaders_lin_$uname_f.tar.gz \
-    && cp ioncube/ioncube_loader_lin_8.1.so /usr/local/lib/php/extensions/no-debug-non-zts-20210902/ioncube.so \
-    && pecl install redis yaml && docker-php-ext-enable redis yaml opcache ioncube \
-    # 删除临时文件
-    && docker-php-source delete && apt clean all && rm -rf ioncube ioncube_loaders_lin_$uname_f.tar.gz /var/lib/apt/lists/* \
-    # 安装composer
-    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+RUN apt update -y \
+    && apt install -y init locales git wget curl vim cron sudo gnupg2 tzdata ca-certificates apt-transport-https software-properties-common -y \
+    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/sury-php.list \
+    && wget -qO - https://packages.sury.org/php/apt.gpg | sudo apt-key add - \
+    && apt update -y \
+    && apt install -y php8.1-fpm php8.1-curl php8.1-gd php8.1-mbstring php8.1-redis php8.1-sqlite3 php8.1-xml php8.1-zip php8.1-yaml php8.1-mysql \
+    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer \
+    && sed -i "s/^#\?listen =.*/listen = 0.0.0.0:9000/g" /etc/php/8.1/fpm/pool.d/www.conf \
+    && sed -i "s/^#\?upload_max_filesize =.*/upload_max_filesize = 1024M/g" /etc/php/8.1/cli/php.ini \
+    && sed -i "s/^#\?post_max_size =.*/post_max_size = 1024M/g" /etc/php/8.1/cli/php.ini \
+    && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
+    && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && apt clean all && rm -rf /var/lib/apt/lists/*
+
+ENV LANG zh_CN.UTF-8
+
+CMD ["/sbin/init"]
