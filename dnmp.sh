@@ -634,8 +634,6 @@ run_dnmp() {
     if [[ -n $services ]]; then
         cd /var/dnmp && docker-compose up -d $services && runmenu
     fi
-
-    menu
 }
 
 stop_dnmp() {
