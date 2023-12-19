@@ -20,9 +20,7 @@ services:
       dnmp:
 
   php7.4:
-    build:
-      context: ./php7.4
-      dockerfile: Dockerfile
+    image: ryan1995/php-fpm:7.4
     container_name: php7.4
     hostname: php74
     environment:
@@ -35,9 +33,7 @@ services:
       dnmp:
 
   php8.1:
-    build:
-      context: ./php8.1
-      dockerfile: Dockerfile
+    image: ryan1995/php-fpm:8.1
     container_name: php8.1
     hostname: php81
     environment:
@@ -50,9 +46,7 @@ services:
       dnmp:
 
   php8.2:
-    build:
-      context: ./php8.2
-      dockerfile: Dockerfile
+    image: ryan1995/php-fpm:8.2
     container_name: php8.2
     hostname: php82
     environment:
