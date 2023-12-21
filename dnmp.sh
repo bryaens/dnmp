@@ -108,7 +108,8 @@ install_base() {
             yum install -y git
         fi
         if ! command -v docker &>/dev/null; then
-            yum install -y docker
+            curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
+            ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin >/dev/null 2>&1
             systemctl enable docker
             systemctl restart docker
         fi
@@ -125,19 +126,10 @@ install_base() {
             apt install -y git
         fi
         if ! command -v docker &>/dev/null; then
-            apt install -y docker.io
+            curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
+            ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin >/dev/null 2>&1
             systemctl enable docker
             systemctl restart docker
-        fi
-    fi
-
-    if ! command -v docker-compose &>/dev/null; then
-        # 执行 Docker-Compose 安装命令
-         if curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose; then
-            echo -e "${GREEN}Docker-Compose 安装成功。${NC}"
-        else
-            echo -e "${RED}Docker-Compose 安装失败，请检查安装命令或手动安装 Docker-Compose。${NC}"
-            mainmenu
         fi
     fi
 }
