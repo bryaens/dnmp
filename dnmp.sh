@@ -419,16 +419,10 @@ acme_cfapiNTLD() {
 
     read -rp "请输入 Cloudflare Global API Key: " cf_key
     [[ -z $cf_key ]] && echo -e "${RED}未输入 Cloudflare Global API Key，无法执行操作！${NC}" && acmesslmenu
-    export CF_Key="$cf_key"
+    CF_Key="$cf_key"
     read -rp "请输入 Cloudflare 的登录邮箱: " cf_email
     [[ -z $cf_email ]] && echo -e "${RED}未输入 Cloudflare 的登录邮箱，无法执行操作!${NC}" && acmesslmenu
-    export CF_Email="$cf_email"
-    read -rp "请输入 Cloudflare Token: " cf_token
-    [[ -z $cf_token ]] && echo -e "${RED}未输入 Cloudflare Token，无法执行操作！${NC}" && acmesslmenu
-    export CF_Token="$cf_token"
-    read -rp "请输入 Cloudflare Account ID: " cf_account_id
-    [[ -z $cf_account_id ]] && echo -e "${RED}未输入 Cloudflare Account ID，无法执行操作！${NC}" && acmesslmenu
-    export CF_Account_ID="$cf_account_id"
+    CF_Email="$cf_email"
 
     first_domain="${domains[0]}"
     acme_domains=""
