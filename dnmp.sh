@@ -88,50 +88,38 @@ providermenu() {
 }
 
 install_base() {
-    # 检测操作系统类型
-    OS=$(cat /etc/os-release | grep -o -E "Debian|Ubuntu|CentOS" | head -n 1)
-    if [[ "$OS" != "Debian" && "$OS" != "Ubuntu" && "$OS" != "CentOS" ]]; then
+    echo -e "${GREEN}开始安装依赖...${NC}"
+    OS=$(cat /etc/os-release | grep -o -E "Debian|Ubuntu|CentOS" | head -n 1)    
+    if [[ "$OS" == "Debian" || "$OS" == "Ubuntu" ]]; then
+        commands=("git" "socat" "lsof" "cron" "ip")
+        apps=("git" "socat" "lsof" "cron" "iproute2")
+        install=()
+        for i in ${!commands[@]}; do
+            [ ! $(command -v ${commands[i]}) ] && install+=(${apps[i]})
+        done
+        [ "${#install[@]}" -gt 0 ] && apt update -y && apt install -y ${install[@]}
+        systemctl enable --now cron >/dev/null 2>&1
+    elif [[ "$OS" == "CentOS" ]]; then
+        commands=("git" "socat" "lsof" "crond" "ip")
+        apps=("git" "socat" "lsof" "cronie" "iproute")
+        install=()
+        for i in ${!commands[@]}; do
+            [ ! $(command -v ${commands[i]}) ] && install+=(${apps[i]})
+        done
+        [ "${#install[@]}" -gt 0 ] && yum update -y && yum install -y ${install[@]}
+        systemctl enable --now crond >/dev/null 2>&1
+    else
         echo -e "${RED}很抱歉，你的系统不受支持！"
         exit 1
     fi
-    echo -e "${GREEN}开始安装依赖...${NC}"
-    if [[ "$OS" == "CentOS" ]]; then
-        if ! command -v crond &>/dev/null; then
-            yum install -y cronie
-            systemctl enable crond
-            systemctl restart crond
-        fi
-        if ! command -v socat &>/dev/null; then
-            yum install -y socat
-        fi
-        if ! command -v git &>/dev/null; then
-            yum install -y git
-        fi
-        if ! command -v docker &>/dev/null; then
-            curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
-            ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin >/dev/null 2>&1
-            systemctl enable docker
-            systemctl restart docker
-        fi
-    else
-        if ! command -v cron &>/dev/null; then
-            apt install -y cron
-            systemctl enable cron
-            systemctl restart cron
-        fi
-        if ! command -v socat &>/dev/null; then
-            apt install -y socat
-        fi
-        if ! command -v git &>/dev/null; then
-            apt install -y git
-        fi
-        if ! command -v docker &>/dev/null; then
-            curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
-            ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin >/dev/null 2>&1
-            systemctl enable docker
-            systemctl restart docker
-        fi
+
+    if ! command -v docker &>/dev/null; then
+        curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
+        ln -s /usr/libexec/docker/cli-plugins/docker-compose /usr/local/bin >/dev/null 2>&1
+        systemctl enable --now docker >/dev/null 2>&1
     fi
+    
+    echo -e "${GREEN} 依赖安装完毕！${NC}"
 }
 
 install_dnmp() {
