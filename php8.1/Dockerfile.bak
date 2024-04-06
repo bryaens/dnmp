@@ -6,7 +6,7 @@ RUN apt update -y \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt update -y \
     && apt install -y php8.1-fpm php8.1-curl php8.1-gd php8.1-mbstring php8.1-redis php8.1-sqlite3 php8.1-xml php8.1-zip php8.1-yaml php8.1-mysql \
-    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+    && wget -q https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 SHELL ["/bin/bash", "-c"]
 RUN arch="$(uname -m)" \
     && if [ "$arch" == "i386" ] || [ "$arch" == "i686" ]; then \
@@ -18,7 +18,7 @@ RUN arch="$(uname -m)" \
         else \
             arch="x86-64"; \
         fi \
-    && wget https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_"$arch".tar.gz \
+    && wget -q https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_"$arch".tar.gz \
     && tar xvf ioncube_loaders_lin_"$arch".tar.gz \
     && cp ioncube/ioncube_loader_lin_8.1.so /usr/lib/php/20210902/ioncube.so \
     && echo "zend_extension=/usr/lib/php/20210902/ioncube.so" >> /etc/php/8.1/cli/php.ini \
