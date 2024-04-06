@@ -3,7 +3,6 @@ FROM debian:12
 RUN apt update -y \
     && apt install -y init locales git wget curl vim cron sudo gnupg2 tzdata php-fpm php-bcmath php-curl php-gd php-mbstring php-redis php-sqlite3 php-xml php-zip php-yaml php-mysql \
     && wget -q https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
-
 SHELL ["/bin/bash", "-c"]
 RUN arch="$(uname -m)" \
     && if [ "$arch" == "i386" ] || [ "$arch" == "i686" ]; then \
@@ -26,7 +25,5 @@ RUN arch="$(uname -m)" \
     && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt clean all && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
-
 ENV LANG zh_CN.UTF-8
-
 CMD ["/sbin/init"]
