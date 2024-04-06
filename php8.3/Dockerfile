@@ -1,3 +1,4 @@
+
 FROM debian:11
 
 RUN apt update -y \
@@ -6,8 +7,9 @@ RUN apt update -y \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt update -y \
     && apt install -y php8.3-{fpm,curl,gd,mbstring,redis,sqlite3,xml,zip,yaml,mysql} \
-    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer \
-    && arch="$(uname -m)" \
+    && wget -q https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+SHELL ["/bin/bash", "-c"]
+RUN arch="$(uname -m)" \
     && if [ "$arch" == "i386" ] || [ "$arch" == "i686" ]; then \
             arch="x86"; \
         elif [ "$arch" == "armv6l" ] || [ "$arch" == "armv7l" ]; then \
@@ -17,16 +19,12 @@ RUN apt update -y \
         else \
             arch="x86-64"; \
         fi \
-    && echo "zend_extension = /usr/lib/php/20210902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/cli/conf.d/00-ioncube.ini \
-    && echo "zend_extension = /usr/lib/php/20210902/ioncube_loader_lin_8.1.so" > /etc/php/8.1/fpm/conf.d/00-ioncube.ini \
-    && sed -i "s/^#\?listen =.*/listen = 0.0.0.0:9000/g" /etc/php/8.1/fpm/pool.d/www.conf \
-    && sed -i "s/^#\?upload_max_filesize =.*/upload_max_filesize = 1024M/g" /etc/php/8.1/cli/php.ini \
-    && sed -i "s/^#\?post_max_size =.*/post_max_size = 1024M/g" /etc/php/8.1/cli/php.ini \
+    && sed -i "s/^#\?listen =.*/listen = 0.0.0.0:9000/g" /etc/php/8.3/fpm/pool.d/www.conf \
+    && sed -i "s/^#\?upload_max_filesize =.*/upload_max_filesize = 1024M/g" /etc/php/8.3/cli/php.ini \
+    && sed -i "s/^#\?post_max_size =.*/post_max_size = 1024M/g" /etc/php/8.3/cli/php.ini \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
     && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt clean && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
-
 ENV LANG zh_CN.UTF-8
-
 CMD ["/sbin/init"]
