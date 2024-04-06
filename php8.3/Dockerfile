@@ -6,7 +6,7 @@ RUN apt update -y \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt update -y \
-    && apt install -y php8.3-{fpm,curl,gd,mbstring,redis,sqlite3,xml,zip,yaml,mysql} \
+    && apt install -y php8.3-{bcmath,curl,fpm,gd,mbstring,mysql,redis,sqlite3,xml,yaml,zip} \
     && wget -q https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 SHELL ["/bin/bash", "-c"]
 RUN arch="$(uname -m)" \
