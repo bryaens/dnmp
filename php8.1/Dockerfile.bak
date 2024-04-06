@@ -6,8 +6,9 @@ RUN apt update -y \
     && wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add - \
     && apt update -y \
     && apt install -y php8.1-fpm php8.1-curl php8.1-gd php8.1-mbstring php8.1-redis php8.1-sqlite3 php8.1-xml php8.1-zip php8.1-yaml php8.1-mysql \
-    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer \
-    && arch="$(uname -m)" \
+    && wget https://getcomposer.org/download/latest-stable/composer.phar -O /usr/local/bin/composer && chmod +x /usr/local/bin/composer
+SHELL ["/bin/bash", "-c"]
+RUN arch="$(uname -m)" \
     && if [ "$arch" == "i386" ] || [ "$arch" == "i686" ]; then \
             arch="x86"; \
         elif [ "$arch" == "armv6l" ] || [ "$arch" == "armv7l" ]; then \
