@@ -26,4 +26,4 @@ RUN arch="$(uname -m)" \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt clean all && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
 ENV LANG zh_CN.UTF-8
-CMD ["/sbin/init"
+CMD ["/sbin/init"]
