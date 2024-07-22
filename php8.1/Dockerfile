@@ -29,5 +29,5 @@ RUN arch="$(uname -m)" \
     && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt clean && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
-ENV LANG zh_CN.UTF-8
+ENV LANG=zh_CN.UTF-8
 CMD ["/sbin/init"]
