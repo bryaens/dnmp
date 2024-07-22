@@ -26,4 +26,7 @@ RUN arch="$(uname -m)" \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt clean all && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
 ENV LANG=zh_CN.UTF-8
-CMD ["/sbin/init"]
+WORKDIR /var/www
+COPY --chown=www-data:www-data docker-entrypoint /usr/bin
+RUN chmod +x /usr/bin/docker-entrypoint
+CMD ["docker-entrypoint"]
