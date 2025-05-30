@@ -40,7 +40,7 @@ jobs:
         run: |
           docker buildx build --push \
             --file Docker/php8.4/Dockerfile \
-            --platform linux/386,linux/amd64,linux/arm/v7,linux/arm64 \
+            --platform linux/amd644 \
             --tag ghcr.io/${{ github.repository }}-php8.4:latest .
 
       - name: Cleanup
