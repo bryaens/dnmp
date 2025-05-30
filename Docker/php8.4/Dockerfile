@@ -23,8 +23,7 @@ RUN arch="$(uname -m)" \
     && localedef -i zh_CN -c -f UTF-8 -A /usr/share/locale/locale.alias zh_CN.UTF-8 \
     && ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
-    && apt remove -y gnupg2 ca-certificates apt-transport-https software-properties-common && apt autoremove -y \
-    && apt clean all && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
+    && apt clean && rm -rf /var/lib/apt/lists/* /ioncube /ioncube_loaders_lin_"$arch".tar.gz
 ENV LANG=zh_CN.UTF-8
 WORKDIR /var/www
 COPY Docker/php8.4/docker-entrypoint /usr/bin
